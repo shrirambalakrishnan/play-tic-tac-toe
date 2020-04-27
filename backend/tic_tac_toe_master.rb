@@ -1,6 +1,9 @@
 require('./board_validations')
 require('./game_status_fetcher')
 
+require("./moves/approach1")
+require("./moves/approach2")
+
 class TicTacToeMaster
   attr_accessor :character, :board
 
@@ -25,18 +28,7 @@ class TicTacToeMaster
 
   private
     def get_next_move
-      dumb_move1
-    end
-
-    def dumb_move1
-      puts "Fetching next move using dumb_move1()..."
-
-      for i in 0..2
-        for j in 0..2
-          if !(ALLOWED_USER_INPUT_CHARACTERS.include? (board[i][j]))
-            return {x: i, y: j}
-          end
-        end
-      end
+      # get_move1(board)
+      get_move2(board, character)
     end
 end
