@@ -5,7 +5,7 @@ class TicTacToeMaster
   ALLOWED_USER_INPUT_CHARACTERS = ['X', 'O']
 
   def initialize(board, character = "X")
-    @character = your_character
+    @character = character
     @board = board
   end
 
@@ -14,11 +14,10 @@ class TicTacToeMaster
     return validation_status[:msg] unless validation_status[:status]
 
     game_status = get_game_status
-    return "Game is already over" if is_game_over?
-
-    return "Game drawn" if is_draw?
+    return game_status[:status_msg] if game_status[:status] == "complete"
 
     # TODO- Choose the next move.
+    get_next_move
   end
 
   private
@@ -43,14 +42,16 @@ class TicTacToeMaster
       # 1. Validate if this is a 3*3 board
       # 2. Validate if the characters in board are ALLOWED_CHARACTERS
       return {status: false, msg: 'Board dimensions are not 3*3.'} unless are_board_dimensions_valid?
-      return {status: false, msg: 'Invalid characters present in board.' } unless are_board_chars_valid??
-      return { status: true }
+      return {status: false, msg: 'Invalid characters present in board.' } unless are_board_chars_valid?
+      return {status: true}
     end
 
     def get_game_status
-      return {status_msg: 'X Won the Game.', winner: 'X'} if has_won?('X')
-      return {status_msg: 'O Won the Game.', winner: 'O'} if has_won?('O')
-      return {status_msg: 'Game drawn.', winner: ''} unless is_next_move_possible?
+      return {status_msg: 'X Won the Game.', status: 'complete', winner: 'X'} if has_won?('X')
+      return {status_msg: 'O Won the Game.', status: 'complete', winner: 'O'} if has_won?('O')
+      return {status_msg: 'Game drawn.', status: 'complete', winner: ''} unless is_next_move_possible?
+
+      return {status: 'in_progress'}
     end
 
     def all_elements_in_row_have_same_char?(character)
@@ -94,7 +95,8 @@ class TicTacToeMaster
     def all_elements_in_diag2_have_same_char?(character)
       does_diagonal_2_have_same_char = true
       2.downto(0) do |i|
-        does_diagonal_2_have_same_char = does_diagonal_1_have_same_char && (board[i][i] == character)
+        j = 2 - i
+        does_diagonal_2_have_same_char = does_diagonal_2_have_same_char && (board[i][j] == character)
       end
 
       does_diagonal_2_have_same_char
@@ -129,5 +131,19 @@ class TicTacToeMaster
       !are_all_squares_filled?
     end
 
+    def get_next_move
+      dumb_move1
+    end
 
+    def dumb_move1
+      puts "Fetching next move using dumb_move1()"
+
+      for i in 0..2
+        for j in 0..2
+          if !(ALLOWED_USER_INPUT_CHARACTERS.include? (board[i][j]))
+            return {x: i, y: j}
+          end
+        end
+      end
+    end
 end
