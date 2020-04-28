@@ -65,6 +65,7 @@ export default {
 }
 
 .element {
+  display: inline-block;
   height: 100%;
   width: 100%;
   vertical-align: middle;
