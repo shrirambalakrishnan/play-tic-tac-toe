@@ -17,10 +17,10 @@ class TicTacToeMaster
 
   def play
     validation_status = get_validation_status(board)
-    return validation_status[:msg] unless validation_status[:status]
+    return {status_msg: validation_status[:msg]} unless validation_status[:status]
 
     game_status = get_game_status(board)
-    return game_status[:status_msg] if game_status[:status] == "complete"
+    return {status_msg: game_status[:status_msg]} if game_status[:status] == "complete"
 
     # TODO- Choose the next move.
     get_next_move
