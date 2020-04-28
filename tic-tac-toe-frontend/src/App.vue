@@ -1,8 +1,7 @@
 <template>
   <div id="app">
     <notifications
-      duration="-3"
-      closeOnClick="true"
+      duration="-1"
       width="70%"
       position="top center"
       class="custom-notification-style"

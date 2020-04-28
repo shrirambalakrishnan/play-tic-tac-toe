@@ -6,11 +6,19 @@
           <div class="element" v-on:click="elementOnClickHandler(i, j)">{{board[i][j]}}</div>
         </div>
       </div>
+
+      <div>
+        <span>Player to move - {{current_move_char}}</span>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+const fetchNextMoveEndpoint = "http://localhost:4567/get_next_move";
+import Vue from "vue";
+const axios = require("axios").default;
+
 export default {
   name: "GameArena",
   data() {
@@ -28,7 +36,49 @@ export default {
     flipCurrentMoveChar: function() {
       this.current_move_char = this.current_move_char == "X" ? "O" : "X";
     },
-    elementOnClickHandler: function(x, y) {
+    fetchNextMove: async function() {
+      try {
+        let response = await axios.post(fetchNextMoveEndpoint, {
+          board: JSON.stringify(this.board),
+          character: this.current_move_char
+        });
+        console.log("----------- 1 ----------");
+        console.log(response);
+
+        console.log("----------- 2 ----------");
+        let moveResponse = response.data;
+        console.log(moveResponse);
+
+        if (moveResponse.status_msg) {
+          console.log("qqqqqqqqqqqqqqq");
+          console.log(moveResponse);
+          Vue.notify({
+            type: "status",
+            text: moveResponse.status_msg
+          });
+        } else {
+          console.log("ppppppppppppppp");
+
+          this.$set(
+            this.board[moveResponse["x"]],
+            moveResponse["y"],
+            this.current_move_char
+          );
+
+          console.log("----------- 3 ----------");
+          this.flipCurrentMoveChar();
+
+          console.log("----------- 4 ----------");
+        }
+      } catch (error) {
+        console.log(error);
+        Vue.notify({
+          type: "error",
+          text: "Sorry. Something went wrong. Please try again later!"
+        });
+      }
+    },
+    elementOnClickHandler: async function(x, y) {
       console.log(`(x,y) = (${x}, ${y})`);
 
       if (this.board[x][y]) {
@@ -45,12 +95,13 @@ export default {
       // updatedBoard[x][y] = this.current_move_char;
       //
       this.$set(this.board[x], y, this.current_move_char);
-
       this.flipCurrentMoveChar();
 
       console.log("Updated values...");
       console.log(this.current_move_char);
       console.log(this.board);
+
+      await this.fetchNextMove();
     }
   }
 };
