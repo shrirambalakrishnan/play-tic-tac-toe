@@ -31,8 +31,13 @@ export default {
     elementOnClickHandler: function(x, y) {
       console.log(`(x,y) = (${x}, ${y})`);
 
-      if (this.board[x][y])
-        alert("Selected box already has a value. Please select an empty box.");
+      if (this.board[x][y]) {
+        this.$notify({
+          type: "warn",
+          text: "Selected box already has a value. Please select an empty box."
+        });
+        return;
+      }
 
       // The below code will not work.
       // Ref - https://vuejs.org/v2/guide/reactivity.html#Change-Detection-Caveats

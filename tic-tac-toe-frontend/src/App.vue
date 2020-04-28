@@ -1,5 +1,12 @@
 <template>
   <div id="app">
+    <notifications
+      duration="-3"
+      closeOnClick="true"
+      width="70%"
+      position="top center"
+      class="custom-notification-style"
+    />
     <GameArena />
   </div>
 </template>
@@ -16,4 +23,7 @@ export default {
 </script>
 
 <style>
+.vue-notification {
+  font-size: 20px;
+}
 </style>
