@@ -1,5 +1,5 @@
 # Minimax - minimize the maximum score possible for the opponent
-require_relative('../game_status_fetcher')
+require_relative('./game_status_fetcher')
 
 def get_opponent_char( char )
   case char

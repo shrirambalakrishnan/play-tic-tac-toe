@@ -1,9 +1,6 @@
 require('./board_validations')
 require('./game_status_fetcher')
-
-require("./moves/approach1")
-require("./moves/approach2")
-require("./moves/approach3_minimax.rb")
+require("./next_move")
 
 class TicTacToeMaster
   attr_accessor :character, :board
