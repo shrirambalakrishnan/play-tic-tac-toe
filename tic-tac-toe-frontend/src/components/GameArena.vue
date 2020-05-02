@@ -1,14 +1,16 @@
 <template>
   <div class="board">
     <div>
+      <h1>Game</h1>
+      <h3> You (O) vs Computer (X) </h3>
+      <div>Player to move - {{current_move_char}}</div>
+    </div>
+
+    <div>
       <div class="row-item" v-for="(row, i) in board" :key="i">
         <div class="col-item" v-for="(col, j) in row" :key="j">
           <div class="element" v-on:click="elementOnClickHandler(i, j)">{{board[i][j]}}</div>
         </div>
-      </div>
-
-      <div>
-        <span>Player to move - {{current_move_char}}</span>
       </div>
     </div>
   </div>
@@ -29,7 +31,7 @@ export default {
         ["", "", ""]
       ],
       moves: [],
-      current_move_char: "X"
+      current_move_char: "O"
     };
   },
   methods: {
