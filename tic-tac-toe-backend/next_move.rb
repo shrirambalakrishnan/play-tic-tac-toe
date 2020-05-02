@@ -11,12 +11,8 @@ def get_opponent_char( char )
 end
 
 def get_move(board, char, computer_player_char = 'X')
-  if has_won?( board, char )
-    puts "-------------- char = #{char} --------------"
-    puts "board = #{board}"
-
-    puts "has_won? = true...."
-    return {x: -2, y: -2, score: (computer_player_char == char ? 1 : -1)};
+  if are_all_squares_filled?(board)
+    return {x: -1, y: -1, score: 0};
   end
 
   puts "board = #{board}"
@@ -32,6 +28,11 @@ def get_move(board, char, computer_player_char = 'X')
       if !(TicTacToeMaster::ALLOWED_USER_INPUT_CHARACTERS.include? (board[i][j]))
         new_board = Marshal.load(Marshal.dump(board))
         new_board[i][j] = char
+
+        if(has_won?(new_board, char))
+          return {x: -2, y: -2, score: (computer_player_char == char ? 1 : -1)};
+        end
+
         score = get_move(new_board, get_opponent_char(char))[:score]
 
         if char == computer_player_char
@@ -49,10 +50,6 @@ def get_move(board, char, computer_player_char = 'X')
 
       end
     end
-  end
-
-  if optimal_move[:x] == -10000
-    return {x: -1, y: -1, score: 0};
   end
 
   return {x: optimal_move[:x], y: optimal_move[:y], score: optimal_score}
